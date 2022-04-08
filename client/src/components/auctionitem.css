@@ -1,0 +1,20 @@
+.draftedguy {
+  height: 8vh;
+  background-color: rgb(142, 11, 33);
+  margin: 1px, 1px, 1px, 1px auto;
+  max-width: fit-content;
+  width: 1vh;
+}
+
+.itemwrapper {
+  padding: 1px, 1px;
+  background-color: rgb(11, 57, 142);
+  margin: 1px auto;
+  max-width: fit-content;
+}
+
+.draftedguytextfields {
+  max-width: fit-content;
+  height: 1vh;
+  font-size: x-small;
+}
