@@ -2,16 +2,11 @@ import React from "react";
 import { Row, Col } from "react-bootstrap";
 import Auctionblock from "./Auctionblock";
 import Startgamepanel from "./Startgamepanel";
+import "./components.css";
 
 export default function Auctionwrapper({ tellServer, seats }) {
-  console.log(seats);
-
   return (
-    <Row
-      style={{
-        height: "45vh",
-      }}
-    >
+    <Row className="auctionwrapper">
       <Col
         style={{
           height: "100%",

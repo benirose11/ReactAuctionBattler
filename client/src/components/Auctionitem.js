@@ -1,5 +1,4 @@
 import { Row, Col } from "react-bootstrap";
-import "./auctionitem.css";
 
 export default function Auctionitem({ seats }) {
   return (

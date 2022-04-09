@@ -11,7 +11,7 @@ export default function Chatbox({ chatboxmessages, updateChat }) {
   });
 
   return (
-    <Row style={{ height: "85%", border: "1px solid green" }}>
+    <Row style={{ height: "85%", fontSize: "1.5vh" }}>
       <div className="d-flex felx-column flex-grow-1">
         <div className="flex-grow-1 overflow-auto">
           <div className="h-100 d-flex flex-column align-items-start justify-content-end px-3">

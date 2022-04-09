@@ -1,0 +1,65 @@
+.App {
+  background-color: rgb(138, 60, 206);
+  height: 100%;
+  width: 100%;
+}
+.usernamerow {
+  border: "2px solid blue";
+  background-color: cornflowerblue;
+  height: 8vh;
+}
+
+.playarearow {
+  border: "2px solid blue";
+
+  height: 92vh;
+}
+
+.auctionwrapper {
+  height: 50%;
+}
+
+.chatwrapper {
+  height: 50%;
+  background-color: white;
+}
+
+/* .red {
+  background-color: red;
+} */
+
+.seatselectbutton {
+  width: 10vh;
+  height: 5vh;
+}
+
+.emptyseat {
+  background-color: white;
+  width: 100%;
+  font-size: 4vh;
+}
+
+.filledseat {
+  background-color: rgb(53, 244, 6);
+  width: 100%;
+}
+
+.filledseatinforow {
+  height: 15%;
+}
+
+.draftedguyrow {
+  height: 70%;
+}
+
+.itemwrapper {
+  background-color: wheat;
+
+  border: 1px solid black;
+}
+/* 
+.draftedguytextfields {
+  max-width: fit-content;
+  height: 1vh;
+  font-size: x-small;
+} */

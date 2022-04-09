@@ -1,10 +1,10 @@
 import { Row, Col } from "react-bootstrap";
-import "./auctionitem.css";
+import "./components.css";
 
 export default function Emptyitem() {
   return (
-    <Col className="draftedguy">
-      <h3 className="draftedguytextfields">Name:</h3>
+    <Col className="item">
+      <div className="draftedguytextfields">Name:</div>
       <div className="draftedguytextfields">HP:</div>
       <div className="draftedguytextfields">Damage Type: </div>
       <div className="draftedguytextfields">Damage: </div>

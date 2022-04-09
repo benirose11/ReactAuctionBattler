@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import io from "socket.io-client";
 import { useCookies } from "react-cookie";
 import Playercolumn from "./Playercolumn";
 import Centercolumn from "./Centercolumn";
 import LoginSplashPage from "./LoginSplashPage";
 import UserNamePanel from "./UserNamePanel";
+import "./components.css";
 
 let socket;
 const CONNECTION_PORT = "localhost:8000";
@@ -108,22 +109,17 @@ function App() {
   // }, [cookies]);
 
   return (
-    <Container fluid>
+    <Row fluid className="App">
       {cookies.Name ? (
-        <div>
-          <Row>
+        <Col className="red">
+          <Row fluid className="usernamerow">
             <UserNamePanel
               cookies={cookies}
               removeCookie={removeCookie}
               resetGame={resetGame}
             ></UserNamePanel>
           </Row>
-          <Row
-            fluid
-            style={{
-              border: "2px solid black",
-            }}
-          >
+          <Row fluid className="playarearow">
             <Playercolumn
               seatblock={0}
               seats={seats}
@@ -146,7 +142,7 @@ function App() {
               setCookie={setCookie}
             />
           </Row>
-        </div>
+        </Col>
       ) : (
         <LoginSplashPage
           cookieobj={cookies}
@@ -155,7 +151,7 @@ function App() {
           setUserName={setUserName}
         />
       )}
-    </Container>
+    </Row>
   );
 }
 

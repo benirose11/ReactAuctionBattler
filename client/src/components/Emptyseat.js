@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Col } from "react-bootstrap";
+import "./components.css";
 
 export default function Emptyseat({
   id,
@@ -29,13 +30,17 @@ export default function Emptyseat({
   };
 
   return (
-    <Form onSubmit={seatselect}>
-      <Form.Group>
-        <Form.Label>Seat {id}</Form.Label>
-        <br></br>
+    <Col className="emptyseat">
+      <Form onSubmit={seatselect}>
+        <Form.Group>
+          <Form.Label>Seat {id}</Form.Label>
+          <br></br>
 
-        <Button type="Submit">Take Seat {id}</Button>
-      </Form.Group>
-    </Form>
+          <Button className="seatselectbutton" type="Submit" size="lg">
+            Take Seat {id}
+          </Button>
+        </Form.Group>
+      </Form>
+    </Col>
   );
 }

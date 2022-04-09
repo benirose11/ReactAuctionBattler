@@ -12,6 +12,7 @@ export default function Playerarea({
 }) {
   return (
     <Row
+      fluid
       style={{
         height: "25%",
         border: "2px solid black",

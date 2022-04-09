@@ -20,15 +20,15 @@ export default function Chatcontrols({ chatSubmit }) {
   };
 
   return (
-    <Row>
+    <Row style={{ height: "15%" }}>
       <Form className="w-100" onSubmit={newmessage}>
         <input
           type="textarea"
-          style={{ width: "80%", height: "100%" }}
+          style={{ width: "80%", height: "100%", fontSize: "2vh" }}
           value={inputfieltext}
           onChange={recordchange}
         ></input>
-        <Button type="submit" style={{ width: "20%" }}>
+        <Button type="submit" style={{ width: "20%", height: "100%" }}>
           Submit Chat
         </Button>
       </Form>
