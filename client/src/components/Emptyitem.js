@@ -3,7 +3,7 @@ import "./components.css";
 
 export default function Emptyitem() {
   return (
-    <Col className="item">
+    <Col className="emptyitem">
       <div className="draftedguytextfields">Name:</div>
       <div className="draftedguytextfields">HP:</div>
       <div className="draftedguytextfields">Damage Type: </div>

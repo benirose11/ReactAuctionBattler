@@ -58,8 +58,8 @@ function App() {
     });
 
     socket.on("updatedStateFromServer", (gameState) => {
-      console.log("heard updated seating request");
-      console.log(gameState);
+      // console.log("heard updated seating request");
+      // console.log(gameState);
       updateSeating(gameState);
     });
 
@@ -72,8 +72,6 @@ function App() {
     }
 
     socket.emit("getInitialSeating");
-
-    console.log(socket.id);
   }, [CONNECTION_PORT]);
 
   const updateSeat = (updatedSeating) => {
@@ -84,8 +82,8 @@ function App() {
     socket.emit("Reset", playername);
   };
 
-  const bid = (seatNumber) => {
-    socket.emit("bid", seatNumber);
+  const bid = () => {
+    socket.emit("bid", cookies.Seat);
   };
 
   const chatSubmit = (chatText) => {
@@ -95,18 +93,6 @@ function App() {
   const tellServer = (serverMessage) => {
     socket.emit(serverMessage);
   };
-
-  // useEffect(() => {
-  //   console.log("Cookies change detected");
-  //   console.log(cookies);
-  //   console.log(socket.id);
-  //   if (cookies.Name) {
-  //     socket.emit("SocketChoseUsername", {
-  //       socket_id: socket.id,
-  //       userName: cookies.Name,
-  //     });
-  //   }
-  // }, [cookies]);
 
   return (
     <Row fluid className="App">
@@ -133,6 +119,7 @@ function App() {
               updateChat={updateChat}
               chatSubmit={chatSubmit}
               seats={seats}
+              bid={bid}
             />
             <Playercolumn
               seatblock={4}

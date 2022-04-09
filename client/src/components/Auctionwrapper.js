@@ -3,8 +3,9 @@ import { Row, Col } from "react-bootstrap";
 import Auctionblock from "./Auctionblock";
 import Startgamepanel from "./Startgamepanel";
 import "./components.css";
+import Auctioncontrols from "./Auctioncontrols";
 
-export default function Auctionwrapper({ tellServer, seats }) {
+export default function Auctionwrapper({ tellServer, seats, bid }) {
   return (
     <Row className="auctionwrapper">
       <Col
@@ -21,6 +22,8 @@ export default function Auctionwrapper({ tellServer, seats }) {
         ) : (
           <Auctionblock seats={seats}></Auctionblock>
         )}
+
+        <Auctioncontrols seats={seats} bid={bid}></Auctioncontrols>
       </Col>
     </Row>
   );

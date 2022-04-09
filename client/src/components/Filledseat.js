@@ -15,14 +15,14 @@ export default function Filledseat({ id, cookies, seats }) {
   for (let i = 0; i < 8; i++) {
     if (drafted[i]) {
       displayofguys.push(
-        <Col fluid className="itemwrapper">
+        <Col fluid className="drafteditemwrapper">
           <Draftedguy draftedguy={drafted[i]}></Draftedguy>{" "}
         </Col>
       );
     } else {
       displayofguys.push(
         <Col fluid className="itemwrapper">
-          <Emptyitem className="draftedguy"></Emptyitem>
+          <Emptyitem></Emptyitem>
         </Col>
       );
     }

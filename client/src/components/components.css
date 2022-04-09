@@ -19,9 +19,22 @@
   height: 50%;
 }
 
+.auctioncontrols {
+  height: 25%;
+  background-color: burlywood;
+}
+
+.bidbutton {
+  width: 100%;
+  height: 100%;
+}
+
 .chatwrapper {
   height: 50%;
   background-color: white;
+}
+
+.draftitem {
 }
 
 /* .red {
@@ -54,6 +67,12 @@
 
 .itemwrapper {
   background-color: wheat;
+
+  border: 1px solid black;
+}
+
+.drafteditemwrapper {
+  background-color: rgb(14, 239, 2);
 
   border: 1px solid black;
 }

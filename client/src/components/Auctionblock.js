@@ -20,7 +20,6 @@ export default function Auctionblock({ seats }) {
             <Emptyitem />
           )}
         </Row>
-        <Auctioncontrols></Auctioncontrols>
       </Col>
     </Row>
   );

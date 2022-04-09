@@ -9,6 +9,7 @@ export default function Centercolumn({
   chatSubmit,
   tellServer,
   seats,
+  bid,
 }) {
   return (
     <Col fluid md={4}>
@@ -17,7 +18,7 @@ export default function Centercolumn({
         updateChat={updateChat}
         chatSubmit={chatSubmit}
       />
-      <Auctionwrapper tellServer={tellServer} seats={seats} />
+      <Auctionwrapper tellServer={tellServer} seats={seats} bid={bid} />
     </Col>
   );
 }

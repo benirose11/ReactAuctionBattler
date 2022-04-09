@@ -21,41 +21,48 @@ server.listen(8000, () => {
   console.log("server is running on port 8000");
 });
 
+let gamesize = 2;
+let bank = 5;
+
 const startingGameState = {
-  1: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-  2: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-  3: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-  4: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-  5: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-  6: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-  7: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-  8: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
+  1: { seatfilled: false, draftedguys: [], username: "", bank },
+  2: { seatfilled: false, draftedguys: [], username: "", bank },
+  3: { seatfilled: false, draftedguys: [], username: "", bank },
+  4: { seatfilled: false, draftedguys: [], username: "", bank },
+  5: { seatfilled: false, draftedguys: [], username: "", bank },
+  6: { seatfilled: false, draftedguys: [], username: "", bank },
+  7: { seatfilled: false, draftedguys: [], username: "", bank },
+  8: { seatfilled: false, draftedguys: [], username: "", bank },
   global: {
     gamePhase: "notStarted",
     players: {},
     warriorlist: [],
     turnorder: [],
-    maxbid: 0,
+    maxbid: 1,
     guyontheblock: [],
+    gamesize,
+    winningseat: null,
   },
 };
 
 let serverSeatState = {
-  1: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-  2: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-  3: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-  4: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-  5: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-  6: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-  7: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-  8: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
+  1: { seatfilled: false, draftedguys: [], username: "", bank },
+  2: { seatfilled: false, draftedguys: [], username: "", bank },
+  3: { seatfilled: false, draftedguys: [], username: "", bank },
+  4: { seatfilled: false, draftedguys: [], username: "", bank },
+  5: { seatfilled: false, draftedguys: [], username: "", bank },
+  6: { seatfilled: false, draftedguys: [], username: "", bank },
+  7: { seatfilled: false, draftedguys: [], username: "", bank },
+  8: { seatfilled: false, draftedguys: [], username: "", bank },
   global: {
     gamePhase: "notStarted",
     players: {},
     warriorlist: [],
     turnorder: [],
-    maxbid: 0,
+    maxbid: 1,
     guyontheblock: [],
+    gamesize,
+    winningseat: null,
   },
 };
 
@@ -203,9 +210,6 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("New user connected with" + socket.id);
 
-  // io.emit("message", "New player connected with socket id:" + socket.id);
-  // socket.emit("socketIdFromServer", socket.id);
-
   socket.on("SandLatestSeatingToServer", (updatedSeating) => {
     serverSeatState = updatedSeating;
     io.emit("updatedSeating", serverSeatState);
@@ -221,9 +225,9 @@ io.on("connection", (socket) => {
 
   socket.on("Reset", (playername) => {
     serverSeatState = startingGameState;
-    socket.emit("clearChat");
-    socket.emit("message", playername + " called for a reset");
-    socket.emit("updatedStateFromServer", startingGameState);
+    io.emit("clearChat");
+    io.emit("message", playername + " called for a reset");
+    io.emit("updatedStateFromServer", startingGameState);
   });
 
   socket.on("disconnect", () => {
@@ -234,7 +238,7 @@ io.on("connection", (socket) => {
     serverSeatState.global.gamePhase = "drafting";
     serverSeatState.global.turnorder = [];
     serverSeatState.global.warriorlist = [];
-    serverSeatState.global.maxbid = 0;
+    serverSeatState.global.maxbid = 1;
     serverSeatState.global.guyontheblock = [];
 
     for (let i = 1; i < 9; i++) {
@@ -279,7 +283,29 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("bid", (seat) => {
+    let numguysdrafted = serverSeatState[seat].draftedguys.length;
+
+    if (
+      serverSeatState.global.gamePhase == "drafting" &&
+      serverSeatState.global.guyontheblock[0] &&
+      numguysdrafted < serverSeatState.global.gamesize &&
+      serverSeatState[seat].bank +
+        numguysdrafted -
+        serverSeatState.global.gamesize +
+        1 >
+        serverSeatState.global.maxbid
+    ) {
+      serverSeatState.global.maxbid++;
+      io.emit("updatedStateFromServer", serverSeatState);
+      countdown(5000, serverSeatState.global.maxbid, seat);
+    }
+
+    io.emit("message", `${seat}`);
+  });
+
   const draftOver = () => {
+    calcwinner();
     io.emit("message", "draft over reached");
   };
 
@@ -294,6 +320,12 @@ io.on("connection", (socket) => {
 
     serverSeatState[winningseat].bank =
       serverSeatState[winningseat].bank - serverSeatState.global.maxbid;
+    // if (
+    //   serverSeatState[winningseat].draftedguys.length ===
+    //   serverSeatState.global.gamesize
+    // ) {
+    //   io.emit("message", "maxguyshit");
+    // }
 
     io.emit("updatedStateFromServer", serverSeatState);
 
@@ -303,6 +335,12 @@ io.on("connection", (socket) => {
       );
 
       let activeseat = serverSeatState.global.turnorder.pop();
+      while (
+        serverSeatState[activeseat].draftedguys.length ==
+        serverSeatState.global.gamesize
+      ) {
+        activeseat = serverSeatState.global.turnorder.pop();
+      }
 
       serverSeatState.global.maxbid = 1;
       countdown(5000, serverSeatState.global.maxbid, activeseat);
@@ -330,10 +368,6 @@ io.on("connection", (socket) => {
   };
 
   const calcwinner = () => {
-    io.emit("message", "calc winner called");
-  };
-
-  const callnext = () => {
     io.emit("message", "calc winner called");
   };
 
