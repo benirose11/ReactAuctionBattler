@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Row, Col } from "react-bootstrap";
 import Auctionitem from "./Auctionitem";
 import Emptyitem from "./Emptyitem";
-import Auctioncontrols from "./Auctioncontrols";
+import { GameStateContext } from "../context/context";
 
-export default function Auctionblock({ seats }) {
+export default function Auctionblock() {
+  const [gamestate] = useContext(GameStateContext);
+
   return (
     <Row
       style={{
@@ -14,11 +16,7 @@ export default function Auctionblock({ seats }) {
     >
       <Col>
         <Row>
-          {seats.global.guyontheblock[0] ? (
-            <Auctionitem seats={seats} />
-          ) : (
-            <Emptyitem />
-          )}
+          {gamestate.global.guyontheblock[0] ? <Auctionitem /> : <Emptyitem />}
         </Row>
       </Col>
     </Row>

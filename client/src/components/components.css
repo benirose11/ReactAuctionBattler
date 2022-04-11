@@ -3,6 +3,16 @@
   height: 100%;
   width: 100%;
 }
+
+.splashpage {
+  background-color: rgb(138, 60, 206);
+  height: 100%;
+  width: 100%;
+  font-size: 4rem;
+  justify-content: center;
+  align-self: center;
+}
+
 .usernamerow {
   border: "2px solid blue";
   background-color: cornflowerblue;

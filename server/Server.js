@@ -220,7 +220,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("getInitialSeating", () => {
-    io.emit("updatedSeating", serverSeatState);
+    io.emit("updatedStateFromServer", serverSeatState);
   });
 
   socket.on("Reset", (playername) => {

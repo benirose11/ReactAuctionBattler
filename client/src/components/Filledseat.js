@@ -1,17 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./components.css";
 import Emptyitem from "./Emptyitem";
 import Draftedguy from "./Draftedguy";
 import { Row, Form, Button, Col } from "react-bootstrap";
+import { GameStateContext } from "../context/context";
 
-export default function Filledseat({ id, cookies, seats }) {
-  const bid = () => {
-    console.log(id + " bid");
-  };
-
+export default function Filledseat({ id }) {
   let displayofguys = [];
+  const [gamestate, setGameState] = useContext(GameStateContext);
 
-  let drafted = seats[id].draftedguys;
+  let drafted = gamestate[id].draftedguys;
   for (let i = 0; i < 8; i++) {
     if (drafted[i]) {
       displayofguys.push(
@@ -32,12 +30,11 @@ export default function Filledseat({ id, cookies, seats }) {
     <Col fluid className="filledseat">
       <Row fluid className="filledseatinforow">
         <h1>
-          Seat {id} : {seats[id].username}
+          Seat {id} : {gamestate[id].username}
         </h1>
       </Row>
       <Row fluid className="filledseatinforow">
-        <h2>Funds Remaining $ {seats[id].bank}</h2>
-        <button onClick={bid}>Bid</button>
+        <h2>Funds Remaining $ {gamestate[id].bank}</h2>
       </Row>
       <Row fluid className="draftedguyrow">
         {displayofguys}

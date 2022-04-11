@@ -7,7 +7,7 @@ export default function Chatbox({ chatboxmessages, updateChat }) {
   const latest10messages = chatboxmessages.slice(-10);
   let messagelist = [];
   latest10messages.forEach((chat) => {
-    messagelist.push(<li id={uuidv4()}>{chat}</li>);
+    messagelist.push(<li key={uuidv4()}>{chat}</li>);
   });
 
   return (

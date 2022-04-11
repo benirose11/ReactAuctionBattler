@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Row, Col } from "react-bootstrap";
 import Auctionblock from "./Auctionblock";
 import Startgamepanel from "./Startgamepanel";
 import "./components.css";
 import Auctioncontrols from "./Auctioncontrols";
+import { GameStateContext } from "../context/context";
 
-export default function Auctionwrapper({ tellServer, seats, bid }) {
+export default function Auctionwrapper({ tellServer, bid }) {
+  const [gamestate] = useContext(GameStateContext);
+
   return (
     <Row className="auctionwrapper">
       <Col
@@ -14,16 +17,13 @@ export default function Auctionwrapper({ tellServer, seats, bid }) {
           border: "2px solid black",
         }}
       >
-        {seats.global.gamePhase == "notStarted" ? (
-          <Startgamepanel
-            tellServer={tellServer}
-            seats={seats}
-          ></Startgamepanel>
+        {gamestate.global.gamePhase == "notStarted" ? (
+          <Startgamepanel tellServer={tellServer}></Startgamepanel>
         ) : (
-          <Auctionblock seats={seats}></Auctionblock>
+          <Auctionblock></Auctionblock>
         )}
 
-        <Auctioncontrols seats={seats} bid={bid}></Auctioncontrols>
+        <Auctioncontrols bid={bid}></Auctioncontrols>
       </Col>
     </Row>
   );

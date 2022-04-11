@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Row } from "react-bootstrap";
 import Emptyseat from "./Emptyseat";
 import Filledseat from "./Filledseat";
-
+import { GameStateContext } from "../context/context";
 export default function Playerarea({
   id,
   seats,
@@ -10,6 +10,8 @@ export default function Playerarea({
   cookies,
   setCookie,
 }) {
+  const [gamestate, setGameState] = useContext(GameStateContext);
+
   return (
     <Row
       fluid
@@ -18,8 +20,8 @@ export default function Playerarea({
         border: "2px solid black",
       }}
     >
-      {seats[id].seatfilled ? (
-        <Filledseat id={id} seats={seats} cookies={cookies} />
+      {gamestate[id].seatfilled ? (
+        <Filledseat id={id} />
       ) : (
         <Emptyseat
           updateSeat={updateSeat}

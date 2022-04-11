@@ -1,9 +1,13 @@
 import { Button } from "react-bootstrap";
+import { useContext } from "react";
+import { GameStateContext } from "../context/context";
 
-export default function Startgamepanel({ seats, tellServer }) {
+export default function Startgamepanel({ tellServer }) {
+  const [gamestate] = useContext(GameStateContext);
+
   let filledSeats = 0;
   for (let i = 1; i < 9; i++) {
-    if (seats[i].seatfilled == true) {
+    if (gamestate[i].seatfilled == true) {
       filledSeats++;
     }
   }

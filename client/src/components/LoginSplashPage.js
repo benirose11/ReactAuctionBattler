@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Col, Row } from "react-bootstrap";
 
 function LoginSplashPage(props) {
   const [name, setName] = useState("");
@@ -8,19 +9,21 @@ function LoginSplashPage(props) {
   };
 
   return (
-    <div className="App">
-      <h1>Welcome to React Auction Battler by Beni Rose</h1>
-      <h2>Choose a unique user name:</h2>
-      <input
-        placeholder="name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+    <Col className="splashpage">
+      <Row>Welcome to React Auction Battler by Beni Rose</Row>
+      <Row>Choose a unique user name:</Row>
+      <Row>
+        <input
+          placeholder="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
 
-      <div>
-        <button onClick={handle}>Set Username</button>
-      </div>
-    </div>
+        <div>
+          <button onClick={handle}>Set Username</button>
+        </div>
+      </Row>
+    </Col>
   );
 }
 

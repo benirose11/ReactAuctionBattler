@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import React, { useState, useEffect, useContext } from "react";
+import { Row, Col } from "react-bootstrap";
 import io from "socket.io-client";
 import { useCookies } from "react-cookie";
 import Playercolumn from "./Playercolumn";
 import Centercolumn from "./Centercolumn";
 import LoginSplashPage from "./LoginSplashPage";
 import UserNamePanel from "./UserNamePanel";
+import { GameStateContext } from "../context/context";
+
 import "./components.css";
 
 let socket;
@@ -17,19 +19,7 @@ function App() {
   const [cookies, setCookie, removeCookie] = useCookies();
   const [userName, setUserName] = useState("");
 
-  const [seats, updateSeating] = useState({
-    1: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-    2: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-    3: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-    4: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-    5: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-    6: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-    7: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-    8: { seatfilled: false, draftedguys: [], username: "", bank: 100 },
-    global: {
-      gamePhase: "notStarted",
-    },
-  });
+  const [gamestate, setGameState] = useContext(GameStateContext);
 
   const [chatboxmessages, updateChat] = useState([]);
 
@@ -53,14 +43,9 @@ function App() {
     socket.on("message", (text, username = "Server", timeout = false) =>
       log(text, username, timeout)
     );
-    socket.on("updatedSeating", (updatesSeats) => {
-      updateSeating(updatesSeats);
-    });
 
     socket.on("updatedStateFromServer", (gameState) => {
-      // console.log("heard updated seating request");
-      // console.log(gameState);
-      updateSeating(gameState);
+      setGameState(gameState);
     });
 
     socket.on("clearChat", () => {
@@ -77,6 +62,10 @@ function App() {
   const updateSeat = (updatedSeating) => {
     socket.emit("SandLatestSeatingToServer", updatedSeating);
   };
+
+  // const SendNewGameStateToServer = (updatedGameState) => {
+  //   socket.emit("SandLatestSeatingToServer", updatedGameState);
+  // };
 
   const resetGame = (playername) => {
     socket.emit("Reset", playername);
@@ -108,7 +97,6 @@ function App() {
           <Row fluid className="playarearow">
             <Playercolumn
               seatblock={0}
-              seats={seats}
               updateSeat={updateSeat}
               cookies={cookies}
               setCookie={setCookie}
@@ -118,12 +106,10 @@ function App() {
               chatboxmessages={chatboxmessages}
               updateChat={updateChat}
               chatSubmit={chatSubmit}
-              seats={seats}
               bid={bid}
             />
             <Playercolumn
               seatblock={4}
-              seats={seats}
               updateSeat={updateSeat}
               cookies={cookies}
               setCookie={setCookie}
