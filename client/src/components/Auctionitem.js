@@ -1,14 +1,18 @@
-import { Row, Col } from "react-bootstrap";
+import { Col } from "react-bootstrap";
+import { useContext } from "react";
+import { GameStateContext } from "../context/context";
 
-export default function Auctionitem({ seats }) {
+export default function Auctionitem() {
+  const [gamestate] = useContext(GameStateContext);
+
   return (
     <Col className="itemwrapper">
-      <h3>{seats.global.guyontheblock[0].name}</h3>
-      <div>HP: {seats.global.guyontheblock[0].hp}</div>
-      <div>Damage Type: {seats.global.guyontheblock[0].damagetype}</div>
-      <div>Damage: {seats.global.guyontheblock[0].damage}</div>
+      <h3>{gamestate.global.guyontheblock[0].name}</h3>
+      <div>HP: {gamestate.global.guyontheblock[0].hp}</div>
+      <div>Damage Type: {gamestate.global.guyontheblock[0].damagetype}</div>
+      <div>Damage: {gamestate.global.guyontheblock[0].damage}</div>
       <div>
-        Special Ability: {seats.global.guyontheblock[0].ability.abilityname}
+        Special Ability: {gamestate.global.guyontheblock[0].ability.abilityname}
       </div>
     </Col>
   );

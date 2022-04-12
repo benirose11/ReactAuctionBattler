@@ -28,27 +28,3 @@ export default function Playercolumn(props) {
     </Col>
   );
 }
-
-{
-  /* <Playerarea
-id={props.seatblock + 1}
-seats={props.seats}
-updateSeat={props.updateSeat}
-cookies={props.cookies}
-/>
-<Playerarea
-id={props.seatblock + 2}
-seats={props.seats}
-updateSeat={props.updateSeat}
-/>
-<Playerarea
-id={props.seatblock + 3}
-seats={props.seats}
-updateSeat={props.updateSeat}
-/>
-<Playerarea
-id={props.seatblock + 4}
-seats={props.seats}
-updateSeat={props.updateSeat}
-/> */
-}

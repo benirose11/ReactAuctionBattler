@@ -7,7 +7,7 @@ export default function Startgamepanel({ tellServer }) {
 
   let filledSeats = 0;
   for (let i = 1; i < 9; i++) {
-    if (gamestate[i].seatfilled == true) {
+    if (gamestate[i].seatfilled === true) {
       filledSeats++;
     }
   }

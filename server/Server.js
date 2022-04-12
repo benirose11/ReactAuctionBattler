@@ -21,8 +21,10 @@ server.listen(8000, () => {
   console.log("server is running on port 8000");
 });
 
-let gamesize = 2;
-let bank = 5;
+let gamesize = 6;
+let guystobeplayed = 3;
+let bank = 10;
+let countdowntime = 2000;
 
 const startingGameState = {
   1: { seatfilled: false, draftedguys: [], username: "", bank },
@@ -41,6 +43,7 @@ const startingGameState = {
     maxbid: 1,
     guyontheblock: [],
     gamesize,
+    guystobeplayed,
     winningseat: null,
   },
 };
@@ -62,6 +65,7 @@ let serverSeatState = {
     maxbid: 1,
     guyontheblock: [],
     gamesize,
+    guystobeplayed,
     winningseat: null,
   },
 };
@@ -73,6 +77,7 @@ class warrior {
     this.damage = 20 + Math.floor(Math.random() * 60);
     this.damagetype = "melee";
     this.ability = noabilityobj;
+    this.selected = false;
   }
 }
 
@@ -83,6 +88,7 @@ class archer {
     this.damage = 70 + Math.floor(Math.random() * 50);
     this.damagetype = "piercing";
     this.ability = abilitygenerator(25, 5);
+    this.selected = false;
   }
 }
 
@@ -94,6 +100,7 @@ class mage {
     this.damagetype = "magic";
     // this.ability = abilitygenerator(60, 25)
     this.ability = lamepropsobj[2];
+    this.selected = false;
   }
 }
 
@@ -104,6 +111,7 @@ class commander {
     this.damage = 1 + Math.floor(Math.random() * 99);
     this.damagetype = "melee";
     this.ability = abilitygenerator(21, 80);
+    this.selected = false;
   }
 }
 
@@ -224,6 +232,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("Reset", (playername) => {
+    startingGameState.global.gamePhase = "notStarted";
     serverSeatState = startingGameState;
     io.emit("clearChat");
     io.emit("message", playername + " called for a reset");
@@ -256,7 +265,7 @@ io.on("connection", (socket) => {
         "message",
         `round starting, please do not refresh until completed! playing with ${numplayers} players`
       );
-      for (let i = 0; i < numplayers * 2; i++) {
+      for (let i = 0; i < numplayers * serverSeatState.global.gamesize; i++) {
         let dudegenerator = Math.random() * 100;
         let guy;
         if (dudegenerator < 35) guy = new warrior(`${i + 1}`);
@@ -272,7 +281,7 @@ io.on("connection", (socket) => {
       let activeseat = serverSeatState.global.turnorder.pop();
 
       serverSeatState.global.maxbid = 1;
-      countdown(5000, serverSeatState.global.maxbid, activeseat);
+      countdown(countdowntime, serverSeatState.global.maxbid, activeseat);
       serverSeatState.global.turnorder.unshift(activeseat);
       io.emit("updatedStateFromServer", serverSeatState);
     } else {
@@ -298,15 +307,19 @@ io.on("connection", (socket) => {
     ) {
       serverSeatState.global.maxbid++;
       io.emit("updatedStateFromServer", serverSeatState);
-      countdown(5000, serverSeatState.global.maxbid, seat);
+      countdown(countdowntime, serverSeatState.global.maxbid, seat);
     }
 
     io.emit("message", `${seat}`);
   });
 
   const draftOver = () => {
-    calcwinner();
-    io.emit("message", "draft over reached");
+    serverSeatState.global.gamePhase = "selecting";
+    io.emit(
+      "message",
+      `Draft complete! Please select ${serverSeatState.global.guystobeplayed} of your ${serverSeatState.global.gamesize} drafted Squishmallows for battle!`
+    );
+    io.emit("updatedStateFromServer", serverSeatState);
   };
 
   const resolveWonAuction = (winningseat) => {
@@ -320,12 +333,6 @@ io.on("connection", (socket) => {
 
     serverSeatState[winningseat].bank =
       serverSeatState[winningseat].bank - serverSeatState.global.maxbid;
-    // if (
-    //   serverSeatState[winningseat].draftedguys.length ===
-    //   serverSeatState.global.gamesize
-    // ) {
-    //   io.emit("message", "maxguyshit");
-    // }
 
     io.emit("updatedStateFromServer", serverSeatState);
 
@@ -343,7 +350,7 @@ io.on("connection", (socket) => {
       }
 
       serverSeatState.global.maxbid = 1;
-      countdown(5000, serverSeatState.global.maxbid, activeseat);
+      countdown(countdowntime, serverSeatState.global.maxbid, activeseat);
       serverSeatState.global.turnorder.unshift(activeseat);
     } else {
       draftOver();
@@ -370,26 +377,4 @@ io.on("connection", (socket) => {
   const calcwinner = () => {
     io.emit("message", "calc winner called");
   };
-
-  // socket.on("SocketChoseUsername", (userdata) => {
-  //   console.log("test hit");
-  //   console.log(userdata);
-  //   if (UsersSocketIdKey[userdata.userName]) {
-  //     socket.emit("message", "username already taken");
-  //   } else {
-  //     UsersSocketIdKey[userdata.userName] = userdata.socket_id;
-  //     socket.emit(
-  //       "message",
-  //       "Succesfully entered game as " +
-  //         userdata.userName +
-  //         " with socket id " +
-  //         userdata.socket_id
-  //     );
-  //   }
-  // });
-
-  // socket.emit("your id", socket.id);
-  // socket.on("send message", body => {
-  //     io.emit("message", body)
-  // })
 });

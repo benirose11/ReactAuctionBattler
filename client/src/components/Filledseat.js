@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./components.css";
 import Emptyitem from "./Emptyitem";
 import Draftedguy from "./Draftedguy";
-import { Row, Form, Button, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { GameStateContext } from "../context/context";
 
 export default function Filledseat({ id }) {
@@ -10,11 +10,30 @@ export default function Filledseat({ id }) {
   const [gamestate, setGameState] = useContext(GameStateContext);
 
   let drafted = gamestate[id].draftedguys;
+
+  const select = (index) => {
+    let newguys = [...drafted];
+    newguys[index]["selected"] = true;
+    drafted = newguys;
+    let newgamestate = { ...gamestate };
+    newgamestate[id].draftedguys = drafted;
+    setGameState(newgamestate);
+  };
+
   for (let i = 0; i < 8; i++) {
     if (drafted[i]) {
+      const variableStyle = {
+        backgroundColor: drafted[i]["selected"] ? "rgb(16, 225, 16)" : "wheat",
+        border: drafted[i]["selected"] ? "2px solid black" : "1px solid black",
+      };
+
       displayofguys.push(
-        <Col fluid className="drafteditemwrapper">
-          <Draftedguy draftedguy={drafted[i]}></Draftedguy>{" "}
+        <Col style={variableStyle} key={i}>
+          <Draftedguy
+            draftedguy={drafted[i]}
+            select={select}
+            index={i}
+          ></Draftedguy>{" "}
         </Col>
       );
     } else {
@@ -25,6 +44,8 @@ export default function Filledseat({ id }) {
       );
     }
   }
+
+  // console.log(draftedguys);
 
   return (
     <Col fluid className="filledseat">

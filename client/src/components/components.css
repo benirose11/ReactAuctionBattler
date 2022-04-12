@@ -44,12 +44,9 @@
   background-color: white;
 }
 
-.draftitem {
+.messagecenter {
+  background-color: aqua;
 }
-
-/* .red {
-  background-color: red;
-} */
 
 .seatselectbutton {
   width: 10vh;
@@ -82,9 +79,14 @@
 }
 
 .drafteditemwrapper {
-  background-color: rgb(14, 239, 2);
+  background-color: rgb(241, 209, 0);
 
   border: 1px solid black;
+}
+
+.selecteditemwrapper {
+  background-color: rgb(16, 225, 16);
+  border: 2px solid black;
 }
 /* 
 .draftedguytextfields {

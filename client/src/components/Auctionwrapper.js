@@ -5,6 +5,7 @@ import Startgamepanel from "./Startgamepanel";
 import "./components.css";
 import Auctioncontrols from "./Auctioncontrols";
 import { GameStateContext } from "../context/context";
+import Messagecenter from "./Messagecenter";
 
 export default function Auctionwrapper({ tellServer, bid }) {
   const [gamestate] = useContext(GameStateContext);
@@ -17,7 +18,8 @@ export default function Auctionwrapper({ tellServer, bid }) {
           border: "2px solid black",
         }}
       >
-        {gamestate.global.gamePhase == "notStarted" ? (
+        <Messagecenter></Messagecenter>
+        {gamestate.global.gamePhase === "notStarted" ? (
           <Startgamepanel tellServer={tellServer}></Startgamepanel>
         ) : (
           <Auctionblock></Auctionblock>

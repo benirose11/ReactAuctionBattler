@@ -1,4 +1,4 @@
-import { Row, Col } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import "./components.css";
 
 export default function Emptyitem() {

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Row } from "react-bootstrap";
 import Emptyseat from "./Emptyseat";
 import Filledseat from "./Filledseat";
@@ -10,7 +10,7 @@ export default function Playerarea({
   cookies,
   setCookie,
 }) {
-  const [gamestate, setGameState] = useContext(GameStateContext);
+  const [gamestate] = useContext(GameStateContext);
 
   return (
     <Row
