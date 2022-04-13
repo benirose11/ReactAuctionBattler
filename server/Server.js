@@ -21,20 +21,68 @@ server.listen(8000, () => {
   console.log("server is running on port 8000");
 });
 
-let gamesize = 6;
-let guystobeplayed = 3;
+let gamesize = 1;
+let guystobeplayed = 1;
 let bank = 10;
-let countdowntime = 2000;
+let countdowntime = 1000;
 
 const startingGameState = {
-  1: { seatfilled: false, draftedguys: [], username: "", bank },
-  2: { seatfilled: false, draftedguys: [], username: "", bank },
-  3: { seatfilled: false, draftedguys: [], username: "", bank },
-  4: { seatfilled: false, draftedguys: [], username: "", bank },
-  5: { seatfilled: false, draftedguys: [], username: "", bank },
-  6: { seatfilled: false, draftedguys: [], username: "", bank },
-  7: { seatfilled: false, draftedguys: [], username: "", bank },
-  8: { seatfilled: false, draftedguys: [], username: "", bank },
+  1: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
+  2: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
+  3: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
+  4: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
+  5: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
+  6: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
+  7: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
+  8: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
   global: {
     gamePhase: "notStarted",
     players: {},
@@ -45,18 +93,67 @@ const startingGameState = {
     gamesize,
     guystobeplayed,
     winningseat: null,
+    numberofrosterssubmitted: 0,
   },
 };
 
 let serverSeatState = {
-  1: { seatfilled: false, draftedguys: [], username: "", bank },
-  2: { seatfilled: false, draftedguys: [], username: "", bank },
-  3: { seatfilled: false, draftedguys: [], username: "", bank },
-  4: { seatfilled: false, draftedguys: [], username: "", bank },
-  5: { seatfilled: false, draftedguys: [], username: "", bank },
-  6: { seatfilled: false, draftedguys: [], username: "", bank },
-  7: { seatfilled: false, draftedguys: [], username: "", bank },
-  8: { seatfilled: false, draftedguys: [], username: "", bank },
+  1: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
+  2: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
+  3: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
+  4: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
+  5: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
+  6: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
+  7: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
+  8: {
+    seatfilled: false,
+    draftedguys: [],
+    username: "",
+    bank,
+    selectedguys: [],
+  },
   global: {
     gamePhase: "notStarted",
     players: {},
@@ -67,6 +164,7 @@ let serverSeatState = {
     gamesize,
     guystobeplayed,
     winningseat: null,
+    numberofrosterssubmitted: 0,
   },
 };
 
@@ -218,9 +316,9 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("New user connected with" + socket.id);
 
-  socket.on("SandLatestSeatingToServer", (updatedSeating) => {
+  socket.on("sendLatestSeatingToServer", (updatedSeating) => {
     serverSeatState = updatedSeating;
-    io.emit("updatedSeating", serverSeatState);
+    io.emit("updatedStateFromServer", serverSeatState);
   });
 
   socket.on("newChat", (username, chatText) => {
@@ -241,6 +339,16 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("user disconected", socket.id);
+  });
+
+  socket.on("rosterSubmitted", (id) => {
+    let numplayers = Object.keys(serverSeatState.global.players).length;
+    io.emit("message", serverSeatState[id].username + " submitted a roser");
+    serverSeatState.global.numberofrosterssubmitted =
+      serverSeatState.global.numberofrosterssubmitted + 1;
+    io.emit("updatedStateFromServer", serverSeatState);
+    if (serverSeatState.global.numberofrosterssubmitted == numplayers)
+      calcwinner();
   });
 
   socket.on("startGame", () => {

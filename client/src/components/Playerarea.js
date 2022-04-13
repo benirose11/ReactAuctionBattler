@@ -9,6 +9,7 @@ export default function Playerarea({
   updateSeat,
   cookies,
   setCookie,
+  tellServer,
 }) {
   const [gamestate] = useContext(GameStateContext);
 
@@ -21,7 +22,7 @@ export default function Playerarea({
       }}
     >
       {gamestate[id].seatfilled ? (
-        <Filledseat id={id} />
+        <Filledseat id={id} tellServer={tellServer} cookies={cookies} />
       ) : (
         <Emptyseat
           updateSeat={updateSeat}
@@ -29,6 +30,7 @@ export default function Playerarea({
           id={id}
           cookies={cookies}
           setCookie={setCookie}
+          tellServer={tellServer}
         />
       )}
     </Row>

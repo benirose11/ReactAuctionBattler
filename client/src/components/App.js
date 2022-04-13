@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 import io from "socket.io-client";
 import { useCookies } from "react-cookie";
 import Playercolumn from "./Playercolumn";
@@ -60,7 +60,7 @@ function App() {
   }, [CONNECTION_PORT]);
 
   const updateSeat = (updatedSeating) => {
-    socket.emit("SandLatestSeatingToServer", updatedSeating);
+    socket.emit("sendLatestSeatingToServer", updatedSeating);
   };
 
   // const SendNewGameStateToServer = (updatedGameState) => {
@@ -79,52 +79,60 @@ function App() {
     socket.emit("newChat", cookies.Name, chatText);
   };
 
-  const tellServer = (serverMessage) => {
-    socket.emit(serverMessage);
+  const tellServer = (serverMessageString, additionalparam) => {
+    console.log(
+      `tell server called with ${serverMessageString} and ${additionalparam}`
+    );
+    console.log(additionalparam);
+    socket.emit(`${serverMessageString}`, additionalparam);
   };
 
   return (
-    <Row fluid className="App">
-      {cookies.Name ? (
-        <Col className="red">
-          <Row fluid className="usernamerow">
-            <UserNamePanel
-              cookies={cookies}
-              removeCookie={removeCookie}
-              resetGame={resetGame}
-            ></UserNamePanel>
-          </Row>
-          <Row fluid className="playarearow">
-            <Playercolumn
-              seatblock={0}
-              updateSeat={updateSeat}
-              cookies={cookies}
-              setCookie={setCookie}
-            />
-            <Centercolumn
-              tellServer={tellServer}
-              chatboxmessages={chatboxmessages}
-              updateChat={updateChat}
-              chatSubmit={chatSubmit}
-              bid={bid}
-            />
-            <Playercolumn
-              seatblock={4}
-              updateSeat={updateSeat}
-              cookies={cookies}
-              setCookie={setCookie}
-            />
-          </Row>
-        </Col>
-      ) : (
-        <LoginSplashPage
-          cookieobj={cookies}
-          setCookie={setCookie}
-          userName={userName}
-          setUserName={setUserName}
-        />
-      )}
-    </Row>
+    <Container fluid className="App">
+      <Row>
+        {cookies.Name ? (
+          <Col className="red">
+            <Row fluid className="usernamerow">
+              <UserNamePanel
+                cookies={cookies}
+                removeCookie={removeCookie}
+                resetGame={resetGame}
+              ></UserNamePanel>
+            </Row>
+            <Row fluid className="playarearow">
+              <Playercolumn
+                seatblock={0}
+                updateSeat={updateSeat}
+                cookies={cookies}
+                setCookie={setCookie}
+                tellServer={tellServer}
+              />
+              <Centercolumn
+                tellServer={tellServer}
+                chatboxmessages={chatboxmessages}
+                updateChat={updateChat}
+                chatSubmit={chatSubmit}
+                bid={bid}
+              />
+              <Playercolumn
+                seatblock={4}
+                updateSeat={updateSeat}
+                cookies={cookies}
+                setCookie={setCookie}
+                tellServer={tellServer}
+              />
+            </Row>
+          </Col>
+        ) : (
+          <LoginSplashPage
+            cookieobj={cookies}
+            setCookie={setCookie}
+            userName={userName}
+            setUserName={setUserName}
+          />
+        )}
+      </Row>
+    </Container>
   );
 }
 

@@ -4,8 +4,17 @@ import "./components.css";
 import { useState, useContext } from "react";
 import { GameStateContext } from "../context/context";
 
-export default function Draftedguy({ draftedguy, index, select }) {
+export default function Draftedguy({ draftedguy, index, select, id, cookies }) {
   const [gamestate] = useContext(GameStateContext);
+  let buttontext = "Add to Battle Roster";
+  if (draftedguy.selected) buttontext = "Remove from Battle Roster";
+  let buttonrender = false;
+  if (
+    gamestate.global.gamePhase === "selecting" &&
+    (cookies.Seat == id) & !gamestate[id]["submitted"]
+  ) {
+    buttonrender = true;
+  }
 
   const selectwithindex = () => {
     select(index);
@@ -19,9 +28,9 @@ export default function Draftedguy({ draftedguy, index, select }) {
       <div>Damage: {draftedguy.damage}</div>
       <div>Special Ability: {draftedguy.abilityname}</div>
 
-      {gamestate.global.gamePhase === "selecting" && (
-        <Button onClick={selectwithindex}>Select for Battle</Button>
-      )}
+      {buttonrender ? (
+        <Button onClick={selectwithindex}>{buttontext}</Button>
+      ) : null}
     </Col>
   );
 }

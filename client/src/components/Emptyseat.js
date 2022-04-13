@@ -11,8 +11,7 @@ export default function Emptyseat({ id, setCookie, cookies, updateSeat }) {
     const oldseat = cookies.Seat ? cookies.Seat : 9;
 
     const newseats = { ...gamestate };
-    console.log(oldseat);
-    console.log(newseats);
+
     newseats[id].seatfilled = true;
     newseats[id].username = cookies.Name;
     if (oldseat != 9 && oldseat != id) {

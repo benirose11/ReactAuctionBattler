@@ -12,6 +12,7 @@ export default function Playercolumn(props) {
         updateSeat={props.updateSeat}
         cookies={props.cookies}
         setCookie={props.setCookie}
+        tellServer={props.tellServer}
       />
     );
   }
