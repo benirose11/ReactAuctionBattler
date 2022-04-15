@@ -23,7 +23,7 @@ export default function Draftedguy({ draftedguy, index, select, id, cookies }) {
   return (
     <Col className="draftitem">
       <div>{draftedguy.name}</div>
-      <div>HP: {draftedguy.hp}</div>
+      <div>Defense: {draftedguy.defense}</div>
       <div>Damage Type: {draftedguy.damagetype}</div>
       <div>Damage: {draftedguy.damage}</div>
       <div>Special Ability: {draftedguy.abilityname}</div>

@@ -46,6 +46,7 @@ export default function Filledseat({ id, tellServer, cookies }) {
   const submitRoster = () => {
     let newgamestate = { ...gamestate };
     newgamestate[id]["submitted"] = true;
+    console.log(newgamestate);
     tellServer("sendLatestSeatingToServer", newgamestate);
     tellServer("rosterSubmitted", id);
   };

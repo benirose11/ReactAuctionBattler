@@ -12,18 +12,37 @@ const express = require("express");
 const { Server } = require("socket.io");
 const app = express();
 const cors = require("cors");
+const path = require("path");
 
 app.use(cors());
 app.use(express.json());
 
+const PORT = process.env.PORT || 8000;
+
 const server = http.createServer(app);
-server.listen(8000, () => {
-  console.log("server is running on port 8000");
+server.listen(PORT, () => {
+  console.log(`server is running on port ${PORT}`);
 });
 
-let gamesize = 1;
-let guystobeplayed = 1;
-let bank = 10;
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+  });
+}
+
+// http://localhost:3000
+
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+
+let gamesize = 3;
+let guystobeplayed = 2;
+let bank = 100;
 let countdowntime = 1000;
 
 const startingGameState = {
@@ -171,10 +190,10 @@ let serverSeatState = {
 class warrior {
   constructor(name) {
     this.name = "Warrior " + `${name}`;
-    this.hp = 50 + Math.floor(Math.random() * 50);
+    this.defense = 50 + Math.floor(Math.random() * 50);
     this.damage = 20 + Math.floor(Math.random() * 60);
     this.damagetype = "melee";
-    this.ability = noabilityobj;
+    this.ability = noabilityobj[0];
     this.selected = false;
   }
 }
@@ -182,7 +201,7 @@ class warrior {
 class archer {
   constructor(name) {
     this.name = "Archer " + `${name}`;
-    this.hp = 10 + Math.floor(Math.random() * 50);
+    this.defense = 10 + Math.floor(Math.random() * 50);
     this.damage = 70 + Math.floor(Math.random() * 50);
     this.damagetype = "piercing";
     this.ability = abilitygenerator(25, 5);
@@ -193,7 +212,7 @@ class archer {
 class mage {
   constructor(name) {
     this.name = "Mage " + `${name}`;
-    this.hp = 10 + Math.floor(Math.random() * 40);
+    this.defense = 10 + Math.floor(Math.random() * 40);
     this.damage = 25 + Math.floor(Math.random() * 40);
     this.damagetype = "magic";
     // this.ability = abilitygenerator(60, 25)
@@ -205,7 +224,7 @@ class mage {
 class commander {
   constructor(name) {
     this.name = "Commander " + `${name}`;
-    this.hp = 1 + Math.floor(Math.random() * 99);
+    this.defense = 1 + Math.floor(Math.random() * 99);
     this.damage = 1 + Math.floor(Math.random() * 99);
     this.damagetype = "melee";
     this.ability = abilitygenerator(21, 80);
@@ -216,60 +235,66 @@ class commander {
 const specialpropsobj = {
   0: {
     abilityname: "Damage Aura 50%",
-    code: (melee, pierce, magic, defense) => {
+    func: function (melee, pierce, magic, defense) {
       melee = melee * 1.5;
       pierce = pierce * 1.5;
       magic = magic * 1.5;
       return { melee, pierce, magic, defense };
     },
     propskey: 0,
+    abilitytype: "special",
   },
 
   1: {
     abilityname: "Defense Aura 30%",
-    code: (melee, pierce, magic, defense) => {
+    func: function (melee, pierce, magic, defense) {
       defense = defense * 1.3;
       return { melee, pierce, magic, defense };
     },
     propskey: 1,
+    abilitytype: "special",
   },
 
   2: {
     abilityname:
       "Magical amplifier, if you have at least 100 magic damage, +250 magic damage",
-    code: (melee, pierce, magic, defense) => {
+    func: function (melee, pierce, magic, defense) {
       if (magic >= 100) magic = magic + 250;
       return { melee, pierce, magic, defense };
     },
     propskey: 2,
+    abilitytype: "special",
   },
 };
 
 const lamepropsobj = {
   0: {
     abilityname: "Melee damage aura 15%",
-    code: (melee, pierce, magic, defense) => {
+    func: function (melee, pierce, magic, defense) {
       melee = Math.floor(melee * 1.15);
       return { melee, pierce, magic, defense };
     },
+
     propskey: 0,
+    abilitytype: "lame",
   },
 
   1: {
     abilityname:
       "Piercing melee weapons, 100% team melee damage converted to piercing",
-    code: (melee, pierce, magic, defense) => {
+    func: function (melee, pierce, magic, defense) {
       pierce = melee + pierce;
       melee = 0;
       return { melee, pierce, magic, defense };
     },
     propskey: 1,
+    abilitytype: "lame",
   },
 
   2: {
     abilityname:
       "Glass Cannon, melee damage reduced 85%, magic+ranged damage +50%, defense -10%",
-    code: (melee, pierce, magic, defense) => {
+    func: function (melee, pierce, magic, defense) {
       melee = melee * 0.15;
       pierce = pierce * 1.5;
       magic = magic * 1.5;
@@ -277,15 +302,19 @@ const lamepropsobj = {
       return { melee, pierce, magic, defense };
     },
     propskey: 2,
+    abilitytype: "lame",
   },
 };
 
 const noabilityobj = {
-  abilityname: "None",
-  code: (melee, pierce, magic, defense) => {
-    return { melee, pierce, magic, defense };
+  0: {
+    abilityname: "None",
+    func: function (melee, pierce, magic, defense) {
+      return { melee, pierce, magic, defense };
+    },
+    propskey: 0,
+    abilitytype: "none",
   },
-  propskey: null,
 };
 
 const abilitygenerator = (chanceforlame, chanceforspecial) => {
@@ -303,21 +332,19 @@ const abilitygenerator = (chanceforlame, chanceforspecial) => {
   }
   if (luckryroll < chanceforlame) {
     return lame;
-  } else return noabilityobj;
+  } else return noabilityobj[0];
 };
 
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-  },
-});
+const testnotify = (message) => {
+  console.log(message);
+};
 
 io.on("connection", (socket) => {
   console.log("New user connected with" + socket.id);
 
   socket.on("sendLatestSeatingToServer", (updatedSeating) => {
     serverSeatState = updatedSeating;
+
     io.emit("updatedStateFromServer", serverSeatState);
   });
 
@@ -347,6 +374,11 @@ io.on("connection", (socket) => {
     serverSeatState.global.numberofrosterssubmitted =
       serverSeatState.global.numberofrosterssubmitted + 1;
     io.emit("updatedStateFromServer", serverSeatState);
+
+    io.emit(
+      "message",
+      `rostersubmit logic, rosters submitted = ${serverSeatState.global.numberofrosterssubmitted} and numplayers = ${numplayers}`
+    );
     if (serverSeatState.global.numberofrosterssubmitted == numplayers)
       calcwinner();
   });
@@ -380,6 +412,7 @@ io.on("connection", (socket) => {
         else if (dudegenerator < 65) guy = new archer(`${i + 1}`);
         else if (dudegenerator < 85) guy = new mage(`${i + 1}`);
         else guy = new commander(`${i + 1}`);
+
         serverSeatState.global.warriorlist.push(guy);
       }
       serverSeatState.global.guyontheblock.push(
@@ -391,6 +424,7 @@ io.on("connection", (socket) => {
       serverSeatState.global.maxbid = 1;
       countdown(countdowntime, serverSeatState.global.maxbid, activeseat);
       serverSeatState.global.turnorder.unshift(activeseat);
+
       io.emit("updatedStateFromServer", serverSeatState);
     } else {
       io.emit(
@@ -483,6 +517,101 @@ io.on("connection", (socket) => {
   };
 
   const calcwinner = () => {
+    serverSeatState.global.gamePhase = "Game Completed";
+    io.emit("updatedStateFromServer", serverSeatState);
+    let resultsobj = {};
+    let winningseat;
+    let highestdmgseen = 0;
+    for (let key in serverSeatState.global.players) {
+      resultsobj[key] = calcrosterdamage(serverSeatState[key].selectedguys);
+    }
+
+    for (let key in resultsobj) {
+      io.emit(
+        "message",
+        `${serverSeatState[key].username} had a total damage output of ${resultsobj[key]}`
+      );
+
+      if (resultsobj[key] > highestdmgseen) {
+        highestdmgseen = resultsobj[key];
+        winningseat = key;
+      }
+    }
+
+    serverSeatState.global.winningseat = winningseat;
+    io.emit(
+      "message",
+      `${serverSeatState[winningseat].username} is the winner with a total damage output of ${resultsobj[winningseat]}`
+    );
+
     io.emit("message", "calc winner called");
+  };
+
+  const calcrosterdamage = (roster) => {
+    let defense = 0;
+    let melee = 0;
+    let pierce = 0;
+    let magic = 0;
+    let abilities = [];
+
+    for (let key in roster) {
+      let curguy = roster[key];
+      defense = defense + curguy.defense;
+      if (curguy.damagetype === "piercing") {
+        pierce = pierce + curguy.damage;
+      }
+      if (curguy.damagetype === "melee") {
+        melee = melee + curguy.damage;
+      }
+      if (curguy.damagetype === "magic") {
+        magic = magic + curguy.damage;
+      }
+      abilities.push(curguy.ability);
+    }
+
+    let { totmelee, totpierce, totmagic, totdefense } = calcmods(
+      melee,
+      pierce,
+      magic,
+      defense,
+      abilities
+    );
+
+    let totalrosterdmg =
+      (totmelee + totpierce + totmagic) *
+      (totdefense / 100 / serverSeatState.global.guystobeplayed);
+
+    return totalrosterdmg;
+  };
+
+  const calcmods = (
+    totmelee,
+    totpierce,
+    totmagic,
+    totdefense,
+    abilityorder
+  ) => {
+    if (abilityorder.length === 0)
+      return { totmelee, totpierce, totmagic, totdefense };
+    let mod = abilityorder.pop();
+    let modfunc;
+    if (mod.abilitytype === "none") {
+      modfunc = noabilityobj[mod.propskey].func;
+    }
+    if (mod.abilitytype === "lame") {
+      modfunc = lamepropsobj[mod.propskey].func;
+    }
+    if (mod.abilitytype === "special") {
+      modfunc = specialpropsobj[mod.propskey].func;
+    }
+
+    let { melee, pierce, magic, defense } = modfunc(
+      totmelee,
+      totpierce,
+      totmagic,
+      totdefense
+    );
+
+    return calcmods(melee, pierce, magic, defense, abilityorder);
   };
 });
