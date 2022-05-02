@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap";
 import { useContext } from "react";
 import { GameStateContext } from "../context/context";
+import Wrapper from "./Helpers/Wrapper";
 
 export default function Startgamepanel({ tellServer }) {
   const [gamestate] = useContext(GameStateContext);
@@ -17,9 +18,9 @@ export default function Startgamepanel({ tellServer }) {
   };
 
   return (
-    <div>
+    <Wrapper>
       <h1>There are currently {filledSeats} of 8 players ready to play</h1>
       <Button onClick={startGame}>Start Game</Button>
-    </div>
+    </Wrapper>
   );
 }

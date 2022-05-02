@@ -70,12 +70,16 @@
 
 .draftedguyrow {
   height: 80%;
+  /* max-height: 40%;
+  min-height: 40%; */
 }
 
 .itemwrapper {
   background-color: wheat;
   min-width: 25%;
   max-width: 25%;
+  max-height: 50%;
+  min-height: 50%;
 
   border: 1px solid black;
 }
@@ -100,9 +104,19 @@
   background-color: rgb(16, 225, 16);
   border: 2px solid black;
 }
-/* 
-.draftedguytextfields {
-  max-width: fit-content;
-  height: 1vh;
-  font-size: x-small;
-} */
+
+.draftguyinfofieldrow {
+  border: 1px solid black;
+  background-color: aqua;
+  font-weight: 700;
+}
+.draftguyinfoname {
+}
+.draftguyinfocontent {
+}
+
+.card {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  border-radius: 10px;
+}

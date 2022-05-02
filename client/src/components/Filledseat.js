@@ -46,10 +46,12 @@ export default function Filledseat({ id, tellServer, cookies }) {
   const submitRoster = () => {
     let newgamestate = { ...gamestate };
     newgamestate[id]["submitted"] = true;
-    console.log(newgamestate);
+
     tellServer("sendLatestSeatingToServer", newgamestate);
     tellServer("rosterSubmitted", id);
   };
+
+  console.log(drafted);
 
   for (let i = 0; i < 8; i++) {
     if (drafted[i]) {
@@ -77,6 +79,8 @@ export default function Filledseat({ id, tellServer, cookies }) {
       );
     }
   }
+
+  console.log(displayofguys);
 
   return (
     <Col fluid className="filledseat">

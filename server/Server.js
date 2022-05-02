@@ -280,8 +280,7 @@ const lamepropsobj = {
   },
 
   1: {
-    abilityname:
-      "Piercing melee weapons, 100% team melee damage converted to piercing",
+    abilityname: "Piercing melee, 100% melee damage to piercing",
     func: function (melee, pierce, magic, defense) {
       pierce = melee + pierce;
       melee = 0;
@@ -292,8 +291,7 @@ const lamepropsobj = {
   },
 
   2: {
-    abilityname:
-      "Glass Cannon, melee damage reduced 85%, magic+ranged damage +50%, defense -10%",
+    abilityname: "Glass Cannon, melee-85%, magic+ranged+50%, defense-10%",
     func: function (melee, pierce, magic, defense) {
       melee = melee * 0.15;
       pierce = pierce * 1.5;
