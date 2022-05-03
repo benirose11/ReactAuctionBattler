@@ -1,24 +1,23 @@
 import React from "react";
-// import "../components.css";
 import "./AlertPopup.css";
-import card from "./Card";
-import Button from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import Card from "./Card";
 
 const GameAlertPopup = (props) => {
   return (
     <div>
       <div className="backdrop" />
-      <card className="modal">
+      <Card className="modal">
         <header className="header">
-          <h2>{props.title}</h2>
+          <h2>I am the title</h2>
         </header>
         <div className="content">
-          <p>{props.message}</p>
+          <p>I am the content</p>
         </div>
         <footer className="actions">
           <Button>Dismiss</Button>
         </footer>
-      </card>
+      </Card>
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import "./components.css";
 import { GameStateContext } from "../context/context";
-import Wrapper from "./Helpers/Wrapper";
 
 export default function Submitrosterarea({ id, cookies }) {
   const [gamestate] = useContext(GameStateContext);
@@ -15,12 +14,12 @@ export default function Submitrosterarea({ id, cookies }) {
   if (gamestate[id]["submitted"])
     playermessage = "Roster Submitted, Awaiting Battle!";
   return (
-    <Wrapper>
+    <>
       {gamestate.global.gamePhase == "selecting" ? (
         <h5>{playermessage}</h5>
       ) : (
         <div></div>
       )}
-    </Wrapper>
+    </>
   );
 }
