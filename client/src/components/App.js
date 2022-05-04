@@ -45,7 +45,6 @@ function App() {
     );
 
     socket.on("updatedStateFromServer", (gameState) => {
-      console.log(gameState.global);
       setGameState(gameState);
     });
 
@@ -81,10 +80,6 @@ function App() {
   };
 
   const tellServer = (serverMessageString, additionalparam) => {
-    // console.log(
-    //   `tell server called with ${serverMessageString} and ${additionalparam}`
-    // );
-    // console.log(additionalparam);
     socket.emit(`${serverMessageString}`, additionalparam);
   };
 
@@ -98,6 +93,7 @@ function App() {
                 cookies={cookies}
                 removeCookie={removeCookie}
                 resetGame={resetGame}
+                tellServer={tellServer}
               ></UserNamePanel>
             </Row>
             <Row fluid className="playarearow">

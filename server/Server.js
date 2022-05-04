@@ -333,10 +333,6 @@ const abilitygenerator = (chanceforlame, chanceforspecial) => {
   } else return noabilityobj[0];
 };
 
-const testnotify = (message) => {
-  console.log(message);
-};
-
 io.on("connection", (socket) => {
   console.log("New user connected with" + socket.id);
 

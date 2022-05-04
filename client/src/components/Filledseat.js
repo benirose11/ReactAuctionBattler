@@ -51,8 +51,6 @@ export default function Filledseat({ id, tellServer, cookies }) {
     tellServer("rosterSubmitted", id);
   };
 
-  console.log(drafted);
-
   for (let i = 0; i < 8; i++) {
     if (drafted[i]) {
       const variableStyle = {
@@ -79,8 +77,6 @@ export default function Filledseat({ id, tellServer, cookies }) {
       );
     }
   }
-
-  console.log(displayofguys);
 
   return (
     <Col fluid className="filledseat">

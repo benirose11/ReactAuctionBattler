@@ -101,6 +101,13 @@
   width: 4%;
 }
 
+#gameSettingsDisplay {
+  margin-left: auto;
+  margin-top: 0.5%;
+  margin-bottom: 0.5%;
+  margin-right: 0.5%;
+}
+
 #submitrosterbutton {
   width: 100%;
   height: 90%;

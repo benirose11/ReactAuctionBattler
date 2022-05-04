@@ -64,6 +64,8 @@ export const GameStateProvider = (props) => {
       selectedguys: [],
     },
     global: {
+      bank: 100,
+      countdown: 5,
       gamePhase: "notStarted",
       players: {},
       warriorlist: [],
