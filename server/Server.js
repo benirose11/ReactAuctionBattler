@@ -40,10 +40,9 @@ const io = new Server(server, {
   },
 });
 
-let gamesize = 3;
-let guystobeplayed = 2;
+let gamesize = 8;
+let guystobeplayed = 4;
 let bank = 100;
-let countdowntime = 1000;
 
 const startingGameState = {
   1: {
@@ -103,6 +102,8 @@ const startingGameState = {
     selectedguys: [],
   },
   global: {
+    bank: 100,
+    countdown: 5,
     gamePhase: "notStarted",
     players: {},
     warriorlist: [],
@@ -174,6 +175,8 @@ let serverSeatState = {
     selectedguys: [],
   },
   global: {
+    bank: 100,
+    countdown: 5,
     gamePhase: "notStarted",
     players: {},
     warriorlist: [],
@@ -416,7 +419,11 @@ io.on("connection", (socket) => {
       let activeseat = serverSeatState.global.turnorder.pop();
 
       serverSeatState.global.maxbid = 1;
-      countdown(countdowntime, serverSeatState.global.maxbid, activeseat);
+      countdown(
+        serverSeatState.global.countdown,
+        serverSeatState.global.maxbid,
+        activeseat
+      );
       serverSeatState.global.turnorder.unshift(activeseat);
 
       io.emit("updatedStateFromServer", serverSeatState);
@@ -443,7 +450,11 @@ io.on("connection", (socket) => {
     ) {
       serverSeatState.global.maxbid++;
       io.emit("updatedStateFromServer", serverSeatState);
-      countdown(countdowntime, serverSeatState.global.maxbid, seat);
+      countdown(
+        serverSeatState.global.countdown,
+        serverSeatState.global.maxbid,
+        seat
+      );
     }
 
     io.emit("message", `${seat}`);
@@ -486,7 +497,11 @@ io.on("connection", (socket) => {
       }
 
       serverSeatState.global.maxbid = 1;
-      countdown(countdowntime, serverSeatState.global.maxbid, activeseat);
+      countdown(
+        serverSeatState.global.countdown,
+        serverSeatState.global.maxbid,
+        activeseat
+      );
       serverSeatState.global.turnorder.unshift(activeseat);
     } else {
       draftOver();
@@ -494,18 +509,20 @@ io.on("connection", (socket) => {
   };
 
   const countdown = (timeout, bidamount, activeseat) => {
-    if (timeout === 0) {
+    let bidmiliseconds = timeout * 1000;
+
+    if (bidmiliseconds === 0) {
       resolveWonAuction(activeseat);
     } else if (bidamount === serverSeatState.global.maxbid) {
       const username = serverSeatState[activeseat].username;
-      const secondsremaining = timeout / 1000;
+      const secondsremaining = bidmiliseconds / 1000;
 
       io.emit(
         "message",
         `${username} is currently winning with a bid of $${bidamount}. ${secondsremaining} seconds remaining`
       );
       setTimeout(() => {
-        countdown(timeout - 1000, bidamount, activeseat);
+        countdown(timeout - 1, bidamount, activeseat);
       }, 1000);
     }
   };

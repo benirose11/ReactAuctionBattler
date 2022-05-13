@@ -4,8 +4,7 @@ export const GameStateContext = createContext();
 
 export const GameStateProvider = (props) => {
   const bank = 100;
-  const gamesize = 8;
-  const guystobeplayed = 4;
+
   const [gamestate, setGameState] = useState({
     1: {
       seatfilled: false,
@@ -72,8 +71,8 @@ export const GameStateProvider = (props) => {
       turnorder: [],
       maxbid: 1,
       guyontheblock: [],
-      gamesize,
-      guystobeplayed,
+      gamesize: 8,
+      guystobeplayed: 4,
       winningseat: null,
       numberofrosterssubmitted: 0,
     },

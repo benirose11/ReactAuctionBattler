@@ -1,31 +1,32 @@
 import React, { useState, useContext } from "react";
 import { GameStateContext } from "../context/context";
-import { Row, Col } from "react-bootstrap";
-import "./components.css";
+import { Row, Col, Container } from "react-bootstrap";
+
+import "./SettingsPopup.css";
 import Slider from "./Slider";
 
 export default function SettingsPopup({ toggleModal, tellServer }) {
-  const [gamestate] = useContext(GameStateContext);
+  const [gamestate, setGameState] = useContext(GameStateContext);
   const [gameSettings, setGameSettings] = useState({
-    budget: 100,
-    guystobedrafted: 8,
-    guystobeplayed: 4,
-    countdown: 5,
+    bank: gamestate.global.bank,
+    gamesize: gamestate.global.gamesize,
+    guystobeplayed: gamestate.global.guystobeplayed,
+    countdown: gamestate.global.countdown,
   });
 
   const handleSubmit = () => {
     let newgamestate = { ...gamestate };
-    newgamestate[1].bank = gameSettings.budget;
-    newgamestate[2].bank = gameSettings.budget;
-    newgamestate[3].bank = gameSettings.budget;
-    newgamestate[4].bank = gameSettings.budget;
-    newgamestate[5].bank = gameSettings.budget;
-    newgamestate[6].bank = gameSettings.budget;
-    newgamestate[7].bank = gameSettings.budget;
-    newgamestate[8].bank = gameSettings.budget;
+    newgamestate[1].bank = gameSettings.bank;
+    newgamestate[2].bank = gameSettings.bank;
+    newgamestate[3].bank = gameSettings.bank;
+    newgamestate[4].bank = gameSettings.bank;
+    newgamestate[5].bank = gameSettings.bank;
+    newgamestate[6].bank = gameSettings.bank;
+    newgamestate[7].bank = gameSettings.bank;
+    newgamestate[8].bank = gameSettings.bank;
     newgamestate.global.guystobeplayed = gameSettings.guystobeplayed;
-    newgamestate.global.gamesize = gameSettings.guystobedrafted;
-    newgamestate.global.bank = gameSettings.budget;
+    newgamestate.global.gamesize = gameSettings.gamesize;
+    newgamestate.global.bank = gameSettings.bank;
     newgamestate.global.countdown = gameSettings.countdown;
 
     tellServer("sendLatestSeatingToServer", newgamestate);
@@ -33,56 +34,88 @@ export default function SettingsPopup({ toggleModal, tellServer }) {
     toggleModal();
   };
 
+  const handleClose = () => {
+    toggleModal();
+  };
+  const handleReset = () => {
+    let newgamestate = { ...gamestate };
+    newgamestate[1].bank = 100;
+    newgamestate[2].bank = 100;
+    newgamestate[3].bank = 100;
+    newgamestate[4].bank = 100;
+    newgamestate[5].bank = 100;
+    newgamestate[6].bank = 100;
+    newgamestate[7].bank = 100;
+    newgamestate[8].bank = 100;
+    newgamestate.global.guystobeplayed = 4;
+    newgamestate.global.gamesize = 8;
+    newgamestate.global.bank = 100;
+    newgamestate.global.countdown = 5;
+
+    setGameState(newgamestate);
+    tellServer("sendLatestSeatingToServer", newgamestate);
+    setGameSettings({
+      bank: 100,
+      gamesize: 8,
+      guystobeplayed: 4,
+      countdown: 5,
+    });
+  };
+
   return (
     <div className="popup">
       <div className="popup_inner">
-        <Col>
-          <Row>Adjust Game Settings</Row>
-          <Row>
-            <Slider
-              minval={50}
-              maxval={500}
-              label={"Draft Budget"}
-              gameSettingsKey={"budget"}
-              setGameSettings={setGameSettings}
-              gameSettings={gameSettings}
-            ></Slider>
+        <Container>
+          <Row className={"settingsheader"}>Game Settings</Row>
+
+          <Slider
+            minval={50}
+            maxval={500}
+            label={"Draft Budget"}
+            gameStateKey={"bank"}
+            setGameSettings={setGameSettings}
+            gameSettings={gameSettings}
+          ></Slider>
+
+          <Slider
+            minval={2}
+            maxval={8}
+            label={"Guys to be drafted"}
+            gameStateKey={"gamesize"}
+            setGameSettings={setGameSettings}
+            gameSettings={gameSettings}
+          ></Slider>
+
+          <Slider
+            minval={1}
+            maxval={gameSettings.gamesize}
+            label={"Guys to be played"}
+            gameStateKey={"guystobeplayed"}
+            setGameSettings={setGameSettings}
+            gameSettings={gameSettings}
+          ></Slider>
+
+          <Slider
+            minval={1}
+            maxval={60}
+            label={"Countdown Time"}
+            gameStateKey={"countdown"}
+            setGameSettings={setGameSettings}
+            gameSettings={gameSettings}
+          ></Slider>
+
+          <Row className={"buttonrow"}>
+            <button onClick={handleSubmit} className={"submitbutton submitimg"}>
+              Submit
+            </button>
+            <button onClick={handleClose} className={"closebutton closeimg"}>
+              Close
+            </button>
+            <button onClick={handleReset} className={"resetbutton resetimg"}>
+              Reset to default
+            </button>
           </Row>
-          <Row>
-            <Slider
-              minval={2}
-              maxval={8}
-              label={"Guys to be drafted"}
-              gameSettingsKey={"guystobedrafted"}
-              setGameSettings={setGameSettings}
-              gameSettings={gameSettings}
-            ></Slider>
-          </Row>
-          <Row>
-            <Slider
-              minval={1}
-              maxval={gameSettings.guystobedrafted}
-              label={"Guys to be played"}
-              gameSettingsKey={"guystobeplayed"}
-              setGameSettings={setGameSettings}
-              gameSettings={gameSettings}
-            ></Slider>
-          </Row>
-          <Row>
-            <Slider
-              minval={1}
-              maxval={60}
-              label={"Countdown Time"}
-              gameSettingsKey={"countdown"}
-              setGameSettings={setGameSettings}
-              gameSettings={gameSettings}
-            ></Slider>
-          </Row>
-          <Row>
-            <button onClick={handleSubmit}>Submit</button>
-            {/* <button onClick={sendSettingsToServer}>Test tell server</button> */}
-          </Row>
-        </Col>
+        </Container>
       </div>
     </div>
   );

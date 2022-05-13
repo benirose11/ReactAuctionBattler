@@ -7,6 +7,7 @@ export default function Playercolumn(props) {
   for (let i = 1; i < 5; i++) {
     playercolarray.push(
       <Playerarea
+        key={props.seatblock + i}
         id={props.seatblock + i}
         seats={props.seats}
         updateSeat={props.updateSeat}

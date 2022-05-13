@@ -1,0 +1,99 @@
+.settingsheader {
+  justify-content: center;
+  font-size: xx-large;
+}
+
+.settingsrow {
+  justify-content: center;
+  background-color: rgb(217, 213, 213);
+  border-radius: 0.5em;
+  padding: 3em;
+  margin: 2em;
+  height: 12em;
+}
+
+/* .settingscol {
+  justify-content: right;
+  background-color: blue;
+  height: 100%;
+} */
+
+.curvalcol {
+  font-size: x-large;
+}
+
+.labelcol {
+  font-size: x-large;
+}
+
+.slidercol {
+  font-size: large;
+}
+
+.buttonrow {
+  justify-content: center;
+  padding: 1em;
+  margin: 1em;
+  width: 100%;
+  height: 12em;
+}
+
+.closebutton {
+  font-size: x-large;
+  margin: 0.5em;
+  border-radius: 0.5em;
+  background-color: white;
+  background-image: url(../assets/cancel.png);
+  background-size: 38% 80%;
+  background-repeat: no-repeat;
+  background-position: right;
+  text-align: left;
+  padding-right: 2em;
+}
+
+.submitbutton {
+  font-size: x-large;
+  margin: 0.5em;
+  border-radius: 0.5em;
+  background-color: white;
+  background-image: url(../assets/submit.png);
+  background-size: 35% 80%;
+  background-repeat: no-repeat;
+  background-position: right;
+  text-align: left;
+  padding-right: 2.5em;
+}
+.resetbutton {
+  font-size: x-large;
+  margin: 0.5em;
+  border-radius: 0.5em;
+  background-color: white;
+  background-image: url(../assets/reset.png);
+  background-size: 30% 85%;
+  background-repeat: no-repeat;
+  background-position: right;
+  text-align: left;
+  padding-right: 3.5em;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.8);
+}
+.popup_inner {
+  position: fixed;
+  top: 10%;
+  left: 10%;
+
+  height: fit-content;
+  width: 80%;
+  z-index: 100;
+  overflow: hidden;
+  background-color: rgb(58, 150, 215);
+  border-radius: 5px;
+}

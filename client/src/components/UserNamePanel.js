@@ -7,6 +7,12 @@ import SettingsPopup from "./SettingsPopup";
 function UserNamePanel({ cookies, tellServer, resetGame, removeCookie }) {
   const [settingsModalClicked, toggleModal] = useState(false);
   const [gamestate] = useContext(GameStateContext);
+  const [gameSettings, setGameSettings] = useState({
+    budget: 100,
+    guystobedrafted: 8,
+    guystobeplayed: 4,
+    countdown: 5,
+  });
 
   const resetUsername = () => {
     removeCookie("Name");
@@ -34,6 +40,8 @@ function UserNamePanel({ cookies, tellServer, resetGame, removeCookie }) {
       </div>
       {settingsModalClicked && (
         <SettingsPopup
+          gameSettings={gameSettings}
+          setGameSettings={setGameSettings}
           clicked={settingsModalClicked}
           toggleModal={settingsModal}
           tellServer={tellServer}
