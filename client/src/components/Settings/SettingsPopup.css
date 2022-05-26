@@ -43,7 +43,7 @@
   margin: 0.5em;
   border-radius: 0.5em;
   background-color: white;
-  background-image: url(../assets/cancel.png);
+  background-image: url(../../assets/cancel.png);
   background-size: 38% 80%;
   background-repeat: no-repeat;
   background-position: right;
@@ -56,7 +56,7 @@
   margin: 0.5em;
   border-radius: 0.5em;
   background-color: white;
-  background-image: url(../assets/submit.png);
+  background-image: url(../../assets/submit.png);
   background-size: 35% 80%;
   background-repeat: no-repeat;
   background-position: right;
@@ -68,7 +68,7 @@
   margin: 0.5em;
   border-radius: 0.5em;
   background-color: white;
-  background-image: url(../assets/reset.png);
+  background-image: url(../../assets/reset.png);
   background-size: 30% 85%;
   background-repeat: no-repeat;
   background-position: right;

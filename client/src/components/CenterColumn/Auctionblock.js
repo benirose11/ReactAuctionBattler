@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Row, Col } from "react-bootstrap";
-import Auctionitem from "./Auctionitem";
-import Emptyitem from "./Emptyitem";
-import { GameStateContext } from "../context/context";
+import Auctionitem from "../Auctionitem";
+import Emptyitem from "../Emptyitem";
+import { GameStateContext } from "../../context/context";
 
 export default function Auctionblock() {
   const [gamestate] = useContext(GameStateContext);

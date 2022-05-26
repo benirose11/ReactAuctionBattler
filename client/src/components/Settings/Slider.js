@@ -1,6 +1,6 @@
 import { Row, Col } from "react-bootstrap";
 import { useState, useContext, useEffect } from "react";
-import { GameStateContext } from "../context/context";
+import { GameStateContext } from "../../context/context";
 import "./SettingsPopup.css";
 
 export default function Slider({

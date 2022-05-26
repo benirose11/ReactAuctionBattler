@@ -1,7 +1,7 @@
-import "./components.css";
+import "../components.css";
 import { Row } from "react-bootstrap";
 import { useContext } from "react";
-import { GameStateContext } from "../context/context";
+import { GameStateContext } from "../../context/context";
 
 export default function Messagecenter() {
   const [gamestate] = useContext(GameStateContext);

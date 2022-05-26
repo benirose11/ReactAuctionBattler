@@ -3,9 +3,9 @@ import { Row, Col, Container } from "react-bootstrap";
 import io from "socket.io-client";
 import { useCookies } from "react-cookie";
 import Playercolumn from "./Playercolumn";
-import Centercolumn from "./Centercolumn";
+import Centercolumn from "../components/CenterColumn/Centercolumn";
 import LoginSplashPage from "./LoginSplashPage";
-import UserNamePanel from "./UserNamePanel";
+import UserNamePanel from "./UserNamePanel/UserNamePanel";
 import { GameStateContext } from "../context/context";
 
 import "./components.css";
@@ -87,15 +87,14 @@ function App() {
     <Container fluid className="App">
       <Row>
         {cookies.Name ? (
-          <Col className="red">
-            <Row fluid className="usernamerow">
-              <UserNamePanel
-                cookies={cookies}
-                removeCookie={removeCookie}
-                resetGame={resetGame}
-                tellServer={tellServer}
-              ></UserNamePanel>
-            </Row>
+          <Col>
+            <UserNamePanel
+              cookies={cookies}
+              removeCookie={removeCookie}
+              resetGame={resetGame}
+              tellServer={tellServer}
+            ></UserNamePanel>
+
             <Row fluid className="playarearow">
               <Playercolumn
                 seatblock={0}

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { GameStateContext } from "../context/context";
+import { GameStateContext } from "../../context/context";
 import { Row, Col, Container } from "react-bootstrap";
 
 import "./SettingsPopup.css";

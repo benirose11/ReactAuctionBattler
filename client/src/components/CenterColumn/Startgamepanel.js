@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { useContext } from "react";
-import { GameStateContext } from "../context/context";
+import { GameStateContext } from "../../context/context";
 
 export default function Startgamepanel({ tellServer }) {
   const [gamestate] = useContext(GameStateContext);

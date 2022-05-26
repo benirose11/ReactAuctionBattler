@@ -13,12 +13,6 @@
   align-self: center;
 }
 
-.usernamerow {
-  border: "2px solid blue";
-  background-color: cornflowerblue;
-  height: 8vh;
-}
-
 .playarearow {
   border: "2px solid blue";
 
@@ -88,24 +82,6 @@
   background-color: rgb(241, 209, 0);
 
   border: 1px solid black;
-}
-
-#settingsButton {
-  margin-left: auto;
-  margin-top: 0.5%;
-  margin-bottom: 0.5%;
-  margin-right: 0.5%;
-  background-image: url(../assets/gear.jpg);
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  width: 4%;
-}
-
-#gameSettingsDisplay {
-  margin-left: auto;
-  margin-top: 0.5%;
-  margin-bottom: 0.5%;
-  margin-right: 0.5%;
 }
 
 #submitrosterbutton {

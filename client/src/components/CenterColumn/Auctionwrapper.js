@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 import { Row, Col } from "react-bootstrap";
 import Auctionblock from "./Auctionblock";
 import Startgamepanel from "./Startgamepanel";
-import "./components.css";
+import "../components.css";
 import Auctioncontrols from "./Auctioncontrols";
-import { GameStateContext } from "../context/context";
+import { GameStateContext } from "../../context/context";
 import Messagecenter from "./Messagecenter";
 
 export default function Auctionwrapper({ tellServer, bid }) {
