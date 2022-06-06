@@ -9,6 +9,7 @@ export default function Emptyitem() {
         <div className="draftedguytextfields">HP:</div>
         <div className="draftedguytextfields">Damage Type: </div>
         <div className="draftedguytextfields">Damage: </div>
+        <div className="draftedguytextfields">Defense: </div>
         <div className="draftedguytextfields">Special Ability:</div>
       </Col>
     </Row>

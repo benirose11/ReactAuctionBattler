@@ -98,7 +98,7 @@ export default function Filledseat({ id, tellServer, cookies }) {
           )}
         </Col>
       </Row>
-      <Row fluid className="filledseatinforow"></Row>
+      {/* <Row fluid className="filledseatinforow"></Row> */}
       <Row fluid className="draftedguyrow">
         {displayofguys}
       </Row>

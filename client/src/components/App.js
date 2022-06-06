@@ -52,6 +52,10 @@ function App() {
       updateChat([]);
     });
 
+    socket.on("resetSeat", () => {
+      setCookie("Seat", 9);
+    });
+
     if (!cookies.Seat) {
       setCookie("Seat", 9);
     }
@@ -62,10 +66,6 @@ function App() {
   const updateSeat = (updatedSeating) => {
     socket.emit("sendLatestSeatingToServer", updatedSeating);
   };
-
-  // const SendNewGameStateToServer = (updatedGameState) => {
-  //   socket.emit("SandLatestSeatingToServer", updatedGameState);
-  // };
 
   const resetGame = (playername) => {
     socket.emit("Reset", playername);
@@ -85,9 +85,9 @@ function App() {
 
   return (
     <Container fluid className="App">
-      <Row>
+      <Row fluid className="parentRow">
         {cookies.Name ? (
-          <Col>
+          <Col fluid className="parentCol">
             <UserNamePanel
               cookies={cookies}
               removeCookie={removeCookie}
@@ -95,7 +95,7 @@ function App() {
               tellServer={tellServer}
             ></UserNamePanel>
 
-            <Row fluid className="playarearow">
+            <Row fluid className="mainContentRow">
               <Playercolumn
                 seatblock={0}
                 updateSeat={updateSeat}

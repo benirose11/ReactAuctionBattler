@@ -27,9 +27,9 @@ export default function Draftedguy({ draftedguy, index, select, id, cookies }) {
         <Button onClick={selectwithindex}>{buttontext}</Button>
       ) : null}
       <div>{draftedguy.name}</div>
-      <div>Defense: {}</div>
       <div>Damage Type: {draftedguy.damagetype}</div>
       <div>Damage: {draftedguy.damage}</div>
+      <div>Defense: {draftedguy.defense}</div>
       <div>Special Ability: {draftedguy.ability.abilityname}</div>
     </Col>
   );

@@ -117,78 +117,7 @@ const startingGameState = {
   },
 };
 
-let serverSeatState = {
-  1: {
-    seatfilled: false,
-    draftedguys: [],
-    username: "",
-    bank,
-    selectedguys: [],
-  },
-  2: {
-    seatfilled: false,
-    draftedguys: [],
-    username: "",
-    bank,
-    selectedguys: [],
-  },
-  3: {
-    seatfilled: false,
-    draftedguys: [],
-    username: "",
-    bank,
-    selectedguys: [],
-  },
-  4: {
-    seatfilled: false,
-    draftedguys: [],
-    username: "",
-    bank,
-    selectedguys: [],
-  },
-  5: {
-    seatfilled: false,
-    draftedguys: [],
-    username: "",
-    bank,
-    selectedguys: [],
-  },
-  6: {
-    seatfilled: false,
-    draftedguys: [],
-    username: "",
-    bank,
-    selectedguys: [],
-  },
-  7: {
-    seatfilled: false,
-    draftedguys: [],
-    username: "",
-    bank,
-    selectedguys: [],
-  },
-  8: {
-    seatfilled: false,
-    draftedguys: [],
-    username: "",
-    bank,
-    selectedguys: [],
-  },
-  global: {
-    bank: 100,
-    countdown: 5,
-    gamePhase: "notStarted",
-    players: {},
-    warriorlist: [],
-    turnorder: [],
-    maxbid: 1,
-    guyontheblock: [],
-    gamesize,
-    guystobeplayed,
-    winningseat: null,
-    numberofrosterssubmitted: 0,
-  },
-};
+let serverSeatState = { ...startingGameState };
 
 class warrior {
   constructor(name) {
@@ -354,11 +283,12 @@ io.on("connection", (socket) => {
   });
 
   socket.on("Reset", (playername) => {
-    startingGameState.global.gamePhase = "notStarted";
-    serverSeatState = startingGameState;
+    serverSeatState = { ...startingGameState };
     io.emit("clearChat");
     io.emit("message", playername + " called for a reset");
+
     io.emit("updatedStateFromServer", startingGameState);
+    io.emit("resetSeat");
   });
 
   socket.on("disconnect", () => {
@@ -470,50 +400,58 @@ io.on("connection", (socket) => {
   };
 
   const resolveWonAuction = (winningseat) => {
-    io.emit(
-      "message",
-      `${serverSeatState[winningseat].username} won ${serverSeatState.global.guyontheblock[0].name} for $${serverSeatState.global.maxbid}`
-    );
-    serverSeatState[winningseat].draftedguys.push(
-      serverSeatState.global.guyontheblock.pop()
-    );
-
-    serverSeatState[winningseat].bank =
-      serverSeatState[winningseat].bank - serverSeatState.global.maxbid;
-
-    io.emit("updatedStateFromServer", serverSeatState);
-
-    if (serverSeatState.global.warriorlist.length > 0) {
-      serverSeatState.global.guyontheblock.push(
-        serverSeatState.global.warriorlist.pop()
+    if (serverSeatState.global.gamePhase === "drafting") {
+      io.emit(
+        "message",
+        `${serverSeatState[winningseat].username} won ${serverSeatState.global.guyontheblock[0].name} for $${serverSeatState.global.maxbid}`
+      );
+      serverSeatState[winningseat].draftedguys.push(
+        serverSeatState.global.guyontheblock.pop()
       );
 
-      let activeseat = serverSeatState.global.turnorder.pop();
-      while (
-        serverSeatState[activeseat].draftedguys.length ==
-        serverSeatState.global.gamesize
-      ) {
-        activeseat = serverSeatState.global.turnorder.pop();
+      serverSeatState[winningseat].bank =
+        serverSeatState[winningseat].bank - serverSeatState.global.maxbid;
+
+      io.emit("updatedStateFromServer", serverSeatState);
+
+      if (serverSeatState.global.warriorlist.length > 0) {
+        serverSeatState.global.guyontheblock.push(
+          serverSeatState.global.warriorlist.pop()
+        );
+
+        let activeseat = serverSeatState.global.turnorder.pop();
+        while (
+          serverSeatState[activeseat].draftedguys.length ==
+          serverSeatState.global.gamesize
+        ) {
+          activeseat = serverSeatState.global.turnorder.pop();
+        }
+
+        serverSeatState.global.maxbid = 1;
+        countdown(
+          serverSeatState.global.countdown,
+          serverSeatState.global.maxbid,
+          activeseat
+        );
+        serverSeatState.global.turnorder.unshift(activeseat);
+      } else {
+        draftOver();
       }
-
-      serverSeatState.global.maxbid = 1;
-      countdown(
-        serverSeatState.global.countdown,
-        serverSeatState.global.maxbid,
-        activeseat
-      );
-      serverSeatState.global.turnorder.unshift(activeseat);
-    } else {
-      draftOver();
     }
   };
 
   const countdown = (timeout, bidamount, activeseat) => {
     let bidmiliseconds = timeout * 1000;
 
-    if (bidmiliseconds === 0) {
+    if (
+      bidmiliseconds === 0 &&
+      serverSeatState.global.gamePhase === "drafting"
+    ) {
       resolveWonAuction(activeseat);
-    } else if (bidamount === serverSeatState.global.maxbid) {
+    } else if (
+      bidamount === serverSeatState.global.maxbid &&
+      serverSeatState.global.gamePhase === "drafting"
+    ) {
       const username = serverSeatState[activeseat].username;
       const secondsremaining = bidmiliseconds / 1000;
 

@@ -3,6 +3,8 @@ import { Row } from "react-bootstrap";
 import Emptyseat from "./Emptyseat";
 import Filledseat from "./Filledseat";
 import { GameStateContext } from "../context/context";
+import "./components.css";
+
 export default function Playerarea({
   id,
   seats,
@@ -14,13 +16,7 @@ export default function Playerarea({
   const [gamestate] = useContext(GameStateContext);
 
   return (
-    <Row
-      fluid
-      style={{
-        height: "25%",
-        border: "2px solid black",
-      }}
-    >
+    <Row fluid className="playerAreaRow">
       {gamestate[id].seatfilled ? (
         <Filledseat id={id} tellServer={tellServer} cookies={cookies} />
       ) : (

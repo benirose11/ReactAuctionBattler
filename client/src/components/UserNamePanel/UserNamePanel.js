@@ -5,6 +5,7 @@ import { Row, Col } from "react-bootstrap";
 import SettingsPopup from "../Settings/SettingsPopup";
 import UserNameAndSeatDisplay from "./UserNameAndSeatDisplay";
 import GameSettingsDisplay from "./GameSettingsDisplay";
+import GameStatus from "./GameStatus";
 
 function UserNamePanel({ cookies, tellServer, resetGame, removeCookie }) {
   const [settingsModalClicked, toggleModal] = useState(false);
@@ -16,6 +17,12 @@ function UserNamePanel({ cookies, tellServer, resetGame, removeCookie }) {
     countdown: 5,
   });
 
+  let filledSeats = 0;
+  for (let i = 1; i < 9; i++) {
+    if (gamestate[i].seatfilled === true) {
+      filledSeats++;
+    }
+  }
   const resetUsername = () => {
     removeCookie("Name");
   };
@@ -47,6 +54,12 @@ function UserNamePanel({ cookies, tellServer, resetGame, removeCookie }) {
           tellServer={tellServer}
         />
       )}
+
+      <GameStatus
+        gamestate={gamestate}
+        filledSeats={filledSeats}
+        tellServer={tellServer}
+      ></GameStatus>
 
       <GameSettingsDisplay
         gamestate={gamestate}
