@@ -1,0 +1,21 @@
+.draftitemwrapper {
+  background-color: bisque;
+  height: 100%;
+}
+
+.draftguyinfofieldrow {
+  min-height: 10%;
+}
+
+.draftguyinfoname {
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.draftguyinfocontent {
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}

@@ -1,8 +1,8 @@
 import React from "react";
 import { Col, Button } from "react-bootstrap";
-import "./components.css";
+import "../components.css";
 import { useContext } from "react";
-import { GameStateContext } from "../context/context";
+import { GameStateContext } from "../../context/context";
 import Draftguyinfofield from "./Draftguyinfofield";
 
 export default function Draftedguy({ draftedguy, index, select, id, cookies }) {

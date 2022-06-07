@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import "./components.css";
-import { GameStateContext } from "../context/context";
+import "../components.css";
+import { GameStateContext } from "../../context/context";
 
 export default function Submitrosterarea({ id, cookies }) {
   const [gamestate] = useContext(GameStateContext);

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import io from "socket.io-client";
 import { useCookies } from "react-cookie";
-import Playercolumn from "./Playercolumn";
+import Playercolumn from "./PlayerColumns/Playercolumn";
 import Centercolumn from "../components/CenterColumn/Centercolumn";
 import LoginSplashPage from "./LoginSplashPage";
 import UserNamePanel from "./UserNamePanel/UserNamePanel";

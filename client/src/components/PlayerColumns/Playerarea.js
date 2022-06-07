@@ -2,8 +2,8 @@ import React, { useContext } from "react";
 import { Row } from "react-bootstrap";
 import Emptyseat from "./Emptyseat";
 import Filledseat from "./Filledseat";
-import { GameStateContext } from "../context/context";
-import "./components.css";
+import { GameStateContext } from "../../context/context";
+import "../components.css";
 
 export default function Playerarea({
   id,

@@ -1,12 +1,12 @@
 import { Row, Col } from "react-bootstrap";
-import Card from "../Card";
+import classes from "./usernamepanel.module.css";
 
 const GameSettingsDisplay = ({ gamestate, settingsModal }) => {
   return (
     <>
-      <div className="gameSettingsDisplay">
+      <div className={classes.gameSettingsDisplay}>
         <Col className="align-self-center">
-          <Row id="gameSettingsTitle">Current Game Settings</Row>
+          <Row className={classes.gameSettingsTitle}>Current Game Settings</Row>
           <Row>Draft Budget: {gamestate.global.bank}</Row>
           <Row>Roster Size: {gamestate.global.gamesize}</Row>
           <Row>Roster Slots for Battle: {gamestate.global.guystobeplayed}</Row>
@@ -14,7 +14,7 @@ const GameSettingsDisplay = ({ gamestate, settingsModal }) => {
         </Col>
       </div>
 
-      <button onClick={settingsModal} id="settingsButton" />
+      <button onClick={settingsModal} className={classes.settingsButton} />
     </>
   );
 };

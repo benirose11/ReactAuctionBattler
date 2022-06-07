@@ -1,11 +1,11 @@
-import "../components.css";
 import { React, useState, useContext } from "react";
 import { GameStateContext } from "../../context/context";
-import { Row, Col } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import SettingsPopup from "../Settings/SettingsPopup";
 import UserNameAndSeatDisplay from "./UserNameAndSeatDisplay";
 import GameSettingsDisplay from "./GameSettingsDisplay";
 import GameStatus from "./GameStatus";
+import classes from "./usernamepanel.module.css";
 
 function UserNamePanel({ cookies, tellServer, resetGame, removeCookie }) {
   const [settingsModalClicked, toggleModal] = useState(false);
@@ -38,22 +38,12 @@ function UserNamePanel({ cookies, tellServer, resetGame, removeCookie }) {
   };
 
   return (
-    <Row className="justify-content-start usernamerow">
+    <Row className={`justify-content-around ${classes.usernamerow}`}>
       <UserNameAndSeatDisplay
         cookies={cookies}
         resetGame={resetGame}
         removeCookie={removeCookie}
       />
-
-      {settingsModalClicked && (
-        <SettingsPopup
-          gameSettings={gameSettings}
-          setGameSettings={setGameSettings}
-          clicked={settingsModalClicked}
-          toggleModal={settingsModal}
-          tellServer={tellServer}
-        />
-      )}
 
       <GameStatus
         gamestate={gamestate}
@@ -65,6 +55,16 @@ function UserNamePanel({ cookies, tellServer, resetGame, removeCookie }) {
         gamestate={gamestate}
         settingsModal={settingsModal}
       />
+
+      {settingsModalClicked && (
+        <SettingsPopup
+          gameSettings={gameSettings}
+          setGameSettings={setGameSettings}
+          clicked={settingsModalClicked}
+          toggleModal={settingsModal}
+          tellServer={tellServer}
+        />
+      )}
     </Row>
   );
 }

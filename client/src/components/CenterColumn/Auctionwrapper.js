@@ -1,29 +1,23 @@
 import React, { useContext } from "react";
 import { Row, Col } from "react-bootstrap";
 import Auctionblock from "./Auctionblock";
-import Startgamepanel from "./Startgamepanel";
-import "../components.css";
+// import "../components.css";
 import Auctioncontrols from "./Auctioncontrols";
+import classes from "./centercolumn.module.css";
 import { GameStateContext } from "../../context/context";
-import Messagecenter from "./Messagecenter";
 
 export default function Auctionwrapper({ tellServer, bid }) {
   const [gamestate] = useContext(GameStateContext);
 
   return (
-    <Row className="auctionwrapper">
+    <Row className={classes.auctionwrapper}>
       <Col
         style={{
           height: "100%",
-          border: "2px solid black",
+          border: "1px solid black",
         }}
       >
-        <Messagecenter></Messagecenter>
-        {gamestate.global.gamePhase === "notStarted" ? (
-          <Startgamepanel tellServer={tellServer}></Startgamepanel>
-        ) : (
-          <Auctionblock></Auctionblock>
-        )}
+        <Auctionblock></Auctionblock>
 
         <Auctioncontrols bid={bid}></Auctioncontrols>
       </Col>

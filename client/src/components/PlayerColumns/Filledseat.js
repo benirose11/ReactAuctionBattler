@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
-import "./components.css";
-import Emptyitem from "./Emptyitem";
-import Draftedguy from "./Draftedguy";
+import "../components.css";
+import Emptyitem from "../DraftItems/Emptyitem";
+import Draftedguy from "../../components/DraftItems/Draftedguy";
 import { Row, Col, Button } from "react-bootstrap";
-import { GameStateContext } from "../context/context";
+import { GameStateContext } from "../../context/context";
 import Submitrosterarea from "./Submitrosterarea";
 
 export default function Filledseat({ id, tellServer, cookies }) {

@@ -1,0 +1,22 @@
+.auctionBlock {
+  height: 75%;
+  border: 1px solid black;
+  background-image: url(../../assets/auctionbackground2.png);
+  background-repeat: no-repeat;
+  background-size: 100% 101%;
+  margin-top: 0%;
+  margin-bottom: 0%;
+}
+
+.auctionItemWrapper {
+  max-width: 40%;
+  height: 80%;
+  background-color: white;
+  margin: auto;
+  overflow: hidden;
+  border-radius: 1em;
+}
+
+.auctionwrapper {
+  height: 50%;
+}

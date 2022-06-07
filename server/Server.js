@@ -401,6 +401,7 @@ io.on("connection", (socket) => {
 
   const resolveWonAuction = (winningseat) => {
     if (serverSeatState.global.gamePhase === "drafting") {
+      // console.log(serverSeatState);
       io.emit(
         "message",
         `${serverSeatState[winningseat].username} won ${serverSeatState.global.guyontheblock[0].name} for $${serverSeatState.global.maxbid}`
